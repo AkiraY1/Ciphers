@@ -30,6 +30,5 @@ def hackTransposition(message):
     
     return None
 
-#Unecessary
 if __name__ == '__main__':
     main()
