@@ -30,3 +30,4 @@ if mode == 'decrypt':
     print("Decrypted Message: " + decryptedMessage)
     
 
+#Use only
