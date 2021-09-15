@@ -1,65 +1,44 @@
-from tkinter import *
+# the string to be encrypted/decrypted
+message = 'This is my secret message.'
 
-window = Tk()
-window.title('My first GUI')
+# the encryption/decryption key
+key = 13
 
-def hello_function():
-    print('Hello, World!')
-    display_area.config(text = 'Hello, World!', fg="yellow", bg = "black")
+# tells the program to encrypt or decrypt
+mode = 'encrypt' # set to 'encrypt' or 'decrypt'
 
-def move_circle(event):
-    key = event.keysym
-    if key == "Right":
-        canvas.move(circle,10,0)
-    elif key == "Left":
-        canvas.move(circle,-10,0)
-    elif key == "Up":
-        canvas.move(mychar,0,10)
-    elif key == "Down":
-        canvas.move(mychar,0,-10)
+# every possible symbol that can be encrypted
+LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-# def move_object(event):
-    # canvas.coords(circle2,event.x,event.y)
+# stores the encrypted/decrypted form of the message
+translated = ''
 
-greeting = Label(
-    text ="Hello Tkinter",
-    fg ="#34A2FE",
-    bg ="black",
-    width =10,
-    height = 5
-)
-greeting.pack()
+# capitalize the string in message
+message = message.upper()
 
-button1 = Button(window,
-    text ="Click me",
-    command = hello_function
-    )
-button1.pack()
+# run the encryption/decryption code on each symbol in the message string
+for symbol in message:
+    if symbol in LETTERS:
+        # get the encrypted (or decrypted) number for this symbol
+        num = LETTERS.find(symbol) # get the number of the symbol
+        if mode == 'encrypt':
+            num = num + key
+        elif mode == 'decrypt':
+            num = num - key
 
-button2 = Button(window, text ="Remove", command = button1.destroy)
-button2.pack()
+        # handle the wrap-around if num is larger than the length of
+        # LETTERS or less than 0
+        if num >= len(LETTERS):
+            num = num - len(LETTERS)
+        elif num < 0:
+            num = num + len(LETTERS)
 
-display_area = Label(window, text="")
-display_area.pack()
+        # add encrypted/decrypted number's symbol at the end of translated
+        translated = translated + LETTERS[num]
 
-label = Label(text="Name")
-entry = Entry()
+    else:
+        # just add the symbol without encrypting/decrypting
+        translated = translated + symbol
 
-label.pack()
-entry.pack()
-
-button3 = Button(window, text ="Enter", command = entry.get())
-button3.pack()
-
-canvas = Canvas(window, width=1000,height=1000)
-canvas.pack()
-circle = canvas.create_oval(200,300,230,330, fill="red")
-# circle2 = canvas.create_oval(200,300,230,430, fill="red")
-
-img = PhotoImage(file="Rotating_earth_(large).gif")
-mychar = canvas.create_image(500, 100, image=img)
-
-
-canvas.bind_all('<Key>', move_circle)
-# canvas.bind_all('<Button-1>', move_object)
-window.mainloop()
+# print the encrypted/decrypted string to the screen
+print(translated)
